@@ -10,7 +10,10 @@ const login = async (credentials) => {
     connectToDB();
     const user = await User.findOne({ username: credentials.username });
 
-    if (!user || !user.isAdmin) throw new Error("Wrong credentials!");
+    if (!user) throw new Error("Incorrect username or password.");
+
+    if (user && !user.isAdmin)
+      throw new Error("You are not authorised to access this dashboard.");
 
     const isPasswordCorrect = await bcrypt.compare(
       credentials.password,
@@ -40,7 +43,7 @@ export const { signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  // ADD ADDITIONAL INFORMATION TO SESSION
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
