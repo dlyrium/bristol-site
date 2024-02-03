@@ -11,10 +11,11 @@ const Pagination = ({ count }) => {
   const page = searchParams.get("page") || 1;
 
   const params = new URLSearchParams(searchParams);
-  const ITEM_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 10;
 
-  const hasPrev = ITEM_PER_PAGE * (parseInt(page) - 1) > 0;
-  const hasNext = ITEM_PER_PAGE * (parseInt(page) - 1) + ITEM_PER_PAGE < count;
+  const hasPrev = ITEMS_PER_PAGE * (parseInt(page) - 1) > 0;
+  const hasNext =
+    ITEMS_PER_PAGE * (parseInt(page) - 1) + ITEMS_PER_PAGE < count;
 
   const handleChangePage = (type) => {
     type === "prev"
@@ -25,20 +26,25 @@ const Pagination = ({ count }) => {
 
   return (
     <div className={styles.container}>
-      <button
-        className={styles.button}
-        disabled={!hasPrev}
-        onClick={() => handleChangePage("prev")}
-      >
-        Previous
-      </button>
-      <button
-        className={styles.button}
-        disabled={!hasNext}
-        onClick={() => handleChangePage("next")}
-      >
-        Next
-      </button>
+      <div className={styles.buttons}>
+        <button
+          className={styles.button}
+          disabled={!hasPrev}
+          onClick={() => handleChangePage("prev")}
+        >
+          Prev
+        </button>
+        <button
+          className={styles.button}
+          disabled={!hasNext}
+          onClick={() => handleChangePage("next")}
+        >
+          Next
+        </button>
+      </div>
+      <div className={styles.pageCounter}>
+        Page {page} of {Math.ceil(count / ITEMS_PER_PAGE)}
+      </div>
     </div>
   );
 };
